@@ -17,29 +17,25 @@ class LKTracker(object):
     """Class for Lucas-Kanade tracking with
         pyramidal optical flow."""
 
-    def __init__(self, imnames):
-        """Initialize with a list of image names. """
+    def __init__(self, image):
+        """Initialize parameters, and store the first image. """
 
-        self.imnames = imnames
+        self.image = image
         self.features = []
         self.tracks = []
         self.current_frame = 0
 
-    def step(self, framenbr=None):
-        """Step to another frame. If no argument is
-            given, step to the next frame. """
+    def step(self, next_image):
+        """Step to another frame."""
 
-        if framenbr is None:
-            self.current_frame = (self.current_frame + 1) % len(self.imnames)
-        else:
-            self.current_frame = framenbr % len(self.imnames)
+        self.current_frame += 1
+        self.image = next_image
 
     def detect_points(self):
         """Detect 'good features to track' (corners) in the current frame
             using sub-pixel accuracy. """
 
         # load the image and create grayscale
-        self.image = cv2.imread(self.imnames[self.current_frame])
         self.gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
         # search for good points
@@ -57,17 +53,16 @@ class LKTracker(object):
         """Track the detected features. """
 
         if self.features != []:
-            self.step()  # move to the next frame
-
-            # load the image and create grayscale
-            self.image = cv2.imread(self.imnames[self.current_frame])
+            # use the newly loaded image and create grayscale
             self.gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
             # reshape to fit input format
             tmp = float32(self.features).reshape(-1, 1, 2)
 
             # calculate optical flow
-            features, status, track_error = cv2.calcOpticalFlowPyrLK(self.prev_gray,self.gray,tmp,None,**lk_params)
+            features, status, track_error = cv2.calcOpticalFlowPyrLK(self.prev_gray,
+                                                                     self.gray, tmp,
+                                                                     None, **lk_params)
 
             # remove points lost
             self.features = [p for (st, p) in zip(status, features) if st]
@@ -86,16 +81,15 @@ class LKTracker(object):
     def track(self):
         """Generator for stepping through a sequence."""
 
-        for i in range(len(self.imnames)):
-            if self.features == []:
-                self.detect_points()
-            else:
-                self.track_points()
+        if self.features == []:
+            self.detect_points()
+        else:
+            self.track_points()
 
-            # create a copy in RGB
-            f = array(self.features).reshape(-1, 2)
-            im = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
-            yield im, f
+        # create a copy in RGB
+        f = array(self.features).reshape(-1, 2)
+        im = cv2.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+        yield im, f
 
     def draw(self):
         """Draw the current image with points using
@@ -106,5 +100,5 @@ class LKTracker(object):
         for point in self.features:
             cv2.circle(self.image, (int(point[0][0]), int(point[0][1])), 3, (0, 255, 0), -1)
 
-        cv2.imshow('LKtrack', self.image)
-        cv2.waitKey()
+        return self.image
+        # cv2.imshow('LKtrack', self.image)
