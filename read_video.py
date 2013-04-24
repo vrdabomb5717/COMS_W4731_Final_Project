@@ -33,10 +33,11 @@ def main():
 
     for im in tracking_frames:
         cv2.imshow('LKtrack', im)
-        key = cv2.waitKey(10)
+        key = cv2.waitKey(1)
         if key == 27:
             break
 
+    cv2.destroyAllWindows()
 
 if __name__ == '__main__':
     main()
