@@ -136,12 +136,18 @@ class LKTracker(object):
         hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]
         hulls1 = []
 
-        for h in hulls:
-            for tr in self.tracks:
-                point = tr[0]
-                if cv2.pointPolygonTest(h, (point[0], point[1]), False) > 0:
-                    hulls1.append(h)
-                    break
+        for tr in self.tracks:
+            point = tr[0]
+            x, y = point
+            current_max = -float('inf')
+            current_hull = None
+
+            for h in hulls:
+                dist = cv2.pointPolygonTest(h, (x, y), True)
+                if dist > current_max:
+                    current_hull = h
+                    current_max = dist
+            hulls1.append(current_hull)
         cv2.polylines(self.image, hulls1, 1, (0, 255, 255))
 
         return self.image
