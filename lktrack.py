@@ -11,7 +11,7 @@ lk_params = dict(winSize=(15, 15), maxLevel=2,
 subpix_params = dict(zeroZone=(-1, -1), winSize=(10, 10),
                      criteria = (cv2.TERM_CRITERIA_COUNT | cv2.TERM_CRITERIA_EPS, 20, 0.03))
 
-feature_params = dict(maxCorners=500, qualityLevel=0.3, minDistance=7, blockSize=7)
+feature_params = dict(maxCorners=500, qualityLevel=0.4, minDistance=7, blockSize=7)
 
 
 class LKTracker(object):
@@ -27,6 +27,7 @@ class LKTracker(object):
         self.track_len = 10
         self.current_frame = 0
         self.interval = 5
+        self.mser = cv2.MSER()
 
     def step(self, next_image):
         """Step to another frame."""
@@ -53,7 +54,7 @@ class LKTracker(object):
         self.prev_gray = self.gray
 
     def track_points(self):
-        """Track the detected features. """
+        """Track the detected features."""
 
         if self.features != []:
             # use the newly loaded image and create grayscale
@@ -84,22 +85,11 @@ class LKTracker(object):
                 if len(tr) > self.track_len:
                     del tr[0]
                 new_tracks.append(tr)
+
                 cv2.circle(self.image, (x, y), 2, (0, 255, 0), -1)
 
             self.tracks = new_tracks
             cv2.polylines(self.image, [np.int32(tr) for tr in self.tracks], False, (0, 255, 0))
-
-            # remove points lost
-            # self.features = [p for (st, p) in zip(status, features) if st]
-
-            # clean tracks from lost points
-            # features = np.array(features).reshape((-1, 2))
-            # for i, f in enumerate(features):
-            #     self.tracks[i].append(f)
-            # ndx = [i for (i, st) in enumerate(status) if not st]
-            # ndx.reverse()  # remove from back
-            # for i in ndx:
-            #     self.tracks.pop(i)
 
         # replenish lost points every self.interval steps
         if self.current_frame % self.interval == 0:
@@ -136,9 +126,22 @@ class LKTracker(object):
         """Draw the current image with points using
             OpenCV's own drawing functions."""
 
-        # draw points as green circles
-        # for point in self.features:
-            # cv2.circle(self.image, (int(point[0][0]), int(point[0][1])), 2, (0, 255, 0), -1)
-        # cv2.polylines(self.image, [np.int32(tr) for tr in self.tracks], False, (0, 255, 0))
+        mask = np.zeros_like(self.gray)
+        mask[:] = 255
+        for x, y in [np.int32(tr[-1]) for tr in self.tracks]:
+            cv2.circle(mask, (x, y), 5, 0, -1)
+
+        # do blob detection
+        regions = self.mser.detect(self.gray, mask=mask)
+        hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]
+        hulls1 = []
+
+        for h in hulls:
+            for tr in self.tracks:
+                point = tr[0]
+                if cv2.pointPolygonTest(h, (point[0], point[1]), False) > 0:
+                    hulls1.append(h)
+                    break
+        cv2.polylines(self.image, hulls1, 1, (0, 255, 255))
 
         return self.image
