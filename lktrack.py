@@ -2,7 +2,11 @@ import numpy as np
 import cv2
 import pdb
 
-import cv_gpu
+try:
+    import cv_gpu
+    use_gpu = True
+except ImportError:
+    use_gpu = False
 
 # From Programming Computer Vision in Python
 
@@ -30,7 +34,7 @@ class LKTracker(object):
         self.current_frame = 0
         self.interval = 5
         self.mser = cv2.MSER()
-        self.gpu = cv_gpu.GPU()
+        self.gpu = cv_gpu.GPU() if use_gpu else cv2
 
     def step(self, next_image):
         """Step to another frame."""
