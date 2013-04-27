@@ -34,7 +34,7 @@ class LKTracker(object):
         self.current_frame = 0
         self.interval = 5
         self.mser = cv2.MSER()
-        self.gpu = cv_gpu.GPU() if use_gpu else cv2
+        self.cvh = cv_gpu.GPU() if use_gpu else cv2
 
     def step(self, next_image):
         """Step to another frame."""
@@ -47,7 +47,7 @@ class LKTracker(object):
             using sub-pixel accuracy. """
 
         # load the image and create grayscale
-        self.gray = self.gpu.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        self.gray = self.cvh.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
         # search for good points
         features = cv2.goodFeaturesToTrack(self.gray, **feature_params)
@@ -65,7 +65,7 @@ class LKTracker(object):
 
         if self.features != []:
             # use the newly loaded image and create grayscale
-            self.gray = self.gpu.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+            self.gray = self.cvh.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
             # reshape to fit input format
             # tmp = np.float32(self.features).reshape(-1, 1, 2)
@@ -126,7 +126,7 @@ class LKTracker(object):
 
         # create a copy in RGB
         f = np.array(self.features).reshape(-1, 2)
-        im = self.gpu.cvtColor(self.image, cv2.COLOR_BGR2RGB)
+        im = self.cvh.cvtColor(self.image, cv2.COLOR_BGR2RGB)
         yield im, f
 
     def draw(self):
