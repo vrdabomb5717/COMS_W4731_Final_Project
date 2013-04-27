@@ -7,8 +7,12 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/gpu/gpu.hpp"
 
-// Information on how to call OpenCV functions from Python found in link below.
-// http://stackoverflow.com/questions/12957492/writing-python-bindings-for-c-code-that-use-opencv
+/*  Information on how to call OpenCV functions from Python found in link below.
+    http://stackoverflow.com/questions/12957492/writing-python-bindings-for-c-code-that-use-opencv
+
+    Conversion functions stolen from:
+    https://github.com/Itseez/opencv/blob/2.4.5/modules/python/src2/cv2.cpp
+*/
 
 static PyObject* opencv_error = 0;
 
