@@ -7,6 +7,9 @@
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/gpu/gpu.hpp"
 
+// Information on how to call OpenCV functions from Python found in link below.
+// http://stackoverflow.com/questions/12957492/writing-python-bindings-for-c-code-that-use-opencv
+
 static PyObject* opencv_error = 0;
 
 static int failmsg(const char *fmt, ...)
@@ -362,6 +365,8 @@ PyObject* GPU::cvtColor(PyObject* image, PyObject* code)
 
     if(stat != 0)
     {
+        // See link below for Mat <-> GpuMat conversions
+        // http://stackoverflow.com/questions/6965465/how-to-convert-gpumat-to-cvmat-in-opencv
         cv::gpu::GpuMat src;
         src.upload(cvImage);
         cv::gpu::GpuMat dst;
