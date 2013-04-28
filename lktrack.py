@@ -146,15 +146,11 @@ class LKTracker(object):
         for tr in self.tracks:
             point = tr[0]
             x, y = point
-            current_max = -float('inf')
-            current_hull = None
-
-            for h in hulls:
-                dist = cv2.pointPolygonTest(h, (x, y), True)
-                if dist > current_max:
-                    current_hull = h
-                    current_max = dist
-            hulls1.append(current_hull)
+            distances_gen = (cv2.pointPolygonTest(h, (x, y), True) for h in hulls)
+            distances = np.fromiter(distances_gen, np.float)
+            max_hull_index = np.argmax(distances)
+            max_hull = hulls[max_hull_index]
+            hulls1.append(max_hull)
         cv2.polylines(self.image, hulls1, 1, (0, 255, 255))
 
         return self.image
