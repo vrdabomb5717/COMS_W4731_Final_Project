@@ -31,8 +31,7 @@ def hulls_from_features(tr, hulls):
     distances = np.fromiter(distances_gen, np.float)
 
     max_hull_index = np.argmax(distances)
-    max_hull = hulls[max_hull_index]
-    return max_hull
+    return max_hull_index
 
 
 def test_in_hull(h, x, y):
@@ -161,8 +160,8 @@ class LKTracker(object):
         regions = self.mser.detect(self.gray, mask=mask)
         hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]
         hull_test = partial(hulls_from_features, hulls=hulls)
-        # hulls1 = []
         hulls1 = self.pool.map(hull_test, self.tracks)
+        hulls1 = [hulls[i] for i in hulls1]
 
         # for tr in self.tracks:
         #     point = tr[0]
