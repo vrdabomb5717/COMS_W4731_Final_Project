@@ -33,7 +33,7 @@ def main():
 
     for im in tracking_frames:
         cv2.imshow('LKtrack', im)
-        key = cv2.waitKey(1)
+        key = cv2.waitKey(40)
         if key == 27 or key == ord('q') or key == ord('Q'):
             break
 
