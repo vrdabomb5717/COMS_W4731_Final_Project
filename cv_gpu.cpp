@@ -1,10 +1,8 @@
+#include <Python.h>
 #include <boost/python.hpp>
 #include "gpu.hpp"
 
 using namespace boost::python;
-
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(cvt_overloads, cvtColor, 2, 4)
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(features_overloads, goodFeaturesToTrack, 4, 9)
 
 BOOST_PYTHON_MODULE(cv_gpu)
 {
@@ -21,10 +19,10 @@ BOOST_PYTHON_MODULE(cv_gpu)
 
 	class_<GPU>("GPU")
 	.def(init<>())
-	.def("cvtColor", &GPU::cvtColor, cvt_overloads(args("src", "code", "dst", "dstCn"),
-	     "cvtColor(src, code[, dst[, dstCn]]) -> dst"))
-	.def("goodFeaturesToTrack", &GPU::goodFeaturesToTrack, features_overloads(args("image", "maxCorners", "qualityLevel", "minDistance",
-	     "corners", "mask", "blockSize", "useHarrisDetector", "k"),
-	     "goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) -> corners"))
+	.def("cvtColor", &GPU::cvtColor, (arg("src"), arg("code"), arg("dst")=object(), arg("dstCn")=0),
+	     "cvtColor(src, code[, dst[, dstCn]]) -> dst")
+	.def("goodFeaturesToTrack", &GPU::goodFeaturesToTrack, (arg("image"), arg("maxCorners"), arg("qualityLevel"), arg("minDistance"),
+	     arg("corners")=object(), arg("mask")=object(), arg("blockSize")=3, arg("useHarrisDetector")=false, arg("k")=0.04),
+	     "goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) -> corners")
 	;
 }

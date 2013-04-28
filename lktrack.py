@@ -50,7 +50,7 @@ class LKTracker(object):
         self.gray = self.cvh.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
         # search for good points
-        features = cv2.goodFeaturesToTrack(self.gray, **feature_params)
+        features = self.cvh.goodFeaturesToTrack(self.gray, **feature_params)
 
         # refine the corner locations
         cv2.cornerSubPix(self.gray, features, **subpix_params)
@@ -104,7 +104,7 @@ class LKTracker(object):
             mask[:] = 255
             for x, y in [np.int32(tr[-1]) for tr in self.tracks]:
                 cv2.circle(mask, (x, y), 5, 0, -1)
-            p = cv2.goodFeaturesToTrack(self.gray, mask=mask, **feature_params)
+            p = self.cvh.goodFeaturesToTrack(self.gray, mask=mask, **feature_params)
 
             # Refine the features using cornerSubPix.
             # Takes time to compute, and makes the video choppy, so only enable if you need it.

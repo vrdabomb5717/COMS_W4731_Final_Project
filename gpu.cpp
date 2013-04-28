@@ -1,5 +1,3 @@
-#include <Python.h>
-
 #include "gpu.hpp"
 
 #include "numpy/ndarrayobject.h"
