@@ -1,3 +1,6 @@
+from functools import partial
+from multiprocessing import Pool
+
 import numpy as np
 import cv2
 import pdb
@@ -20,6 +23,10 @@ subpix_params = dict(zeroZone=(-1, -1), winSize=(10, 10),
 feature_params = dict(maxCorners=500, qualityLevel=0.4, minDistance=7, blockSize=7)
 
 
+def test_in_hull(h, x, y):
+    return cv2.pointPolygonTest(h, (x, y), True)
+
+
 class LKTracker(object):
     """Class for Lucas-Kanade tracking with
         pyramidal optical flow."""
@@ -35,6 +42,7 @@ class LKTracker(object):
         self.interval = 5
         self.mser = cv2.MSER()
         self.cvh = cv_gpu.GPU() if use_gpu else cv2
+        self.pool = Pool(processes=8)
 
     def step(self, next_image):
         """Step to another frame."""
@@ -68,7 +76,6 @@ class LKTracker(object):
             self.gray = self.cvh.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
 
             # reshape to fit input format
-            # tmp = np.float32(self.features).reshape(-1, 1, 2)
             tmp = np.float32([tr[-1] for tr in self.tracks]).reshape(-1, 1, 2)
 
             # calculate optical flow using forwards-backwards algorithm
@@ -146,8 +153,13 @@ class LKTracker(object):
         for tr in self.tracks:
             point = tr[0]
             x, y = point
+            # hull_test = partial(test_in_hull, x=x, y=y)
+            # distances = self.pool.map(hull_test, hulls, chunksize=20)
+            # distances = np.float64(distances)
+
             distances_gen = (cv2.pointPolygonTest(h, (x, y), True) for h in hulls)
             distances = np.fromiter(distances_gen, np.float)
+
             max_hull_index = np.argmax(distances)
             max_hull = hulls[max_hull_index]
             hulls1.append(max_hull)
