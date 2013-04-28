@@ -54,7 +54,7 @@ class LKTracker(object):
         self.interval = 5
         self.mser = cv2.MSER()
         self.cvh = cv_gpu.GPU() if use_gpu else cv2
-        self.pool = Pool(processes=8)
+        self.pool = Pool()
 
     def step(self, next_image):
         """Step to another frame."""
