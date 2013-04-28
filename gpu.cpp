@@ -417,6 +417,7 @@ PyObject* GPU::goodFeaturesToTrack(PyObject* image, int maxCorners, double quali
         detector(gpuSrc, gpuDst, gpuMask);
 
         gpuDst.download(cvDst);
+        detector.releaseMemory();
     }
     else
     {
