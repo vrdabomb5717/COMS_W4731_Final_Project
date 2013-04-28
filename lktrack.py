@@ -23,6 +23,18 @@ subpix_params = dict(zeroZone=(-1, -1), winSize=(10, 10),
 feature_params = dict(maxCorners=500, qualityLevel=0.4, minDistance=7, blockSize=7)
 
 
+def hulls_from_features(tr, hulls):
+    point = tr[0]
+    x, y = point
+
+    distances_gen = (cv2.pointPolygonTest(h, (x, y), True) for h in hulls)
+    distances = np.fromiter(distances_gen, np.float)
+
+    max_hull_index = np.argmax(distances)
+    max_hull = hulls[max_hull_index]
+    return max_hull
+
+
 def test_in_hull(h, x, y):
     return cv2.pointPolygonTest(h, (x, y), True)
 
@@ -148,21 +160,23 @@ class LKTracker(object):
         # do blob detection
         regions = self.mser.detect(self.gray, mask=mask)
         hulls = [cv2.convexHull(p.reshape(-1, 1, 2)) for p in regions]
-        hulls1 = []
+        hull_test = partial(hulls_from_features, hulls=hulls)
+        # hulls1 = []
+        hulls1 = self.pool.map(hull_test, self.tracks)
 
-        for tr in self.tracks:
-            point = tr[0]
-            x, y = point
-            # hull_test = partial(test_in_hull, x=x, y=y)
-            # distances = self.pool.map(hull_test, hulls, chunksize=20)
-            # distances = np.float64(distances)
+        # for tr in self.tracks:
+        #     point = tr[0]
+        #     x, y = point
+        #     # hull_test = partial(test_in_hull, x=x, y=y)
+        #     # distances = self.pool.map(hull_test, hulls, chunksize=20)
+        #     # distances = np.float64(distances)
 
-            distances_gen = (cv2.pointPolygonTest(h, (x, y), True) for h in hulls)
-            distances = np.fromiter(distances_gen, np.float)
+        #     distances_gen = (cv2.pointPolygonTest(h, (x, y), True) for h in hulls)
+        #     distances = np.fromiter(distances_gen, np.float)
 
-            max_hull_index = np.argmax(distances)
-            max_hull = hulls[max_hull_index]
-            hulls1.append(max_hull)
+        #     max_hull_index = np.argmax(distances)
+        #     max_hull = hulls[max_hull_index]
+        #     hulls1.append(max_hull)
         cv2.polylines(self.image, hulls1, 1, (0, 255, 255))
 
         return self.image
