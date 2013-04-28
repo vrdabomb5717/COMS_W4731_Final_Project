@@ -348,8 +348,18 @@ static PyObject* pyopencv_from(const Mat& m)
 }
 
 // Note the import_array() from NumPy must be called else you will experience segmentation faults.
-GPU::GPU() { import_array(); }
-GPU::~GPU() { cv::gpu::resetDevice(); }
+GPU::GPU()
+{
+    import_array();
+
+    // returns 0 if OpenCV was compiled without GPU support
+    isGPUEnabled = cv::gpu::getCudaEnabledDeviceCount();
+}
+
+GPU::~GPU()
+{
+    cv::gpu::resetDevice();
+}
 
 // The conversions functions above are taken from OpenCV. The following function is
 // what we define to access the C++ code we are interested in.
@@ -359,33 +369,31 @@ PyObject* GPU::cvtColor(PyObject* image, int code, PyObject* dst, int dstCn)
     ArgInfo arginfo("<unknown>", false);
     pyopencv_to(image, cvImage, arginfo); // From OpenCV's source
 
-    // returns 0 if OpenCV was compiled without GPU support
-    int stat = cv::gpu::getCudaEnabledDeviceCount();
+    cv::Mat cvDst;
+    // pyopencv_to(dst, cvDst, arginfo);
 
-    cv::Mat processedImage;
-    pyopencv_to(dst, processedImage, arginfo);
-
-    if(stat != 0)
+    if(isGPUEnabled)
     {
         // See link below for Mat <-> GpuMat conversions
         // http://stackoverflow.com/questions/6965465/how-to-convert-gpumat-to-cvmat-in-opencv
-        cv::gpu::GpuMat src;
-        src.upload(cvImage);
-        cv::gpu::GpuMat dst;
-        cv::gpu::cvtColor(src, dst, code, dstCn);
-        dst.download(processedImage);
+        cv::gpu::GpuMat gpuSrc;
+        gpuSrc.upload(cvImage);
+        cv::gpu::GpuMat gpuDst;
+        cv::gpu::cvtColor(gpuSrc, gpuDst, code, dstCn);
+        gpuDst.download(cvDst);
     }
     else
     {
-        cv::cvtColor(cvImage, processedImage, code, dstCn);
+        cv::cvtColor(cvImage, cvDst, code, dstCn);
     }
 
-    return pyopencv_from(processedImage); // From OpenCV's source
+    dst = pyopencv_from(cvDst);
+    return dst;
 }
 
-PyObject* goodFeaturesToTrack(PyObject* image, int maxCorners, double qualityLevel, double minDistance,
-                              PyObject* mask=Py_None, int blockSize=3, bool useHarrisDetector=false,
-                              double k=0.04)
+PyObject* GPU::goodFeaturesToTrack(PyObject* image, int maxCorners, double qualityLevel, double minDistance,
+                                   PyObject* corners, PyObject* mask, int blockSize, bool useHarrisDetector,
+                                   double k)
 {
     cv::Mat cvImage;
     ArgInfo arginfo("<unknown>", false);
@@ -394,5 +402,30 @@ PyObject* goodFeaturesToTrack(PyObject* image, int maxCorners, double qualityLev
     cv::Mat cvMask;
     pyopencv_to(mask, cvMask, arginfo);
 
-    // cv::gpu::GoodFeaturesToTrackDetector_GPU detector(points, 0.01, minDist);
+    cv::Mat cvDst;
+
+    if(isGPUEnabled)
+    {
+        cv::gpu::GpuMat gpuSrc;
+        gpuSrc.upload(cvImage);
+
+        cv::gpu::GpuMat gpuDst;
+
+        cv::gpu::GpuMat gpuMask;
+        gpuMask.upload(cvMask);
+
+        cv::gpu::GoodFeaturesToTrackDetector_GPU detector(maxCorners, qualityLevel, minDistance,
+                                                          blockSize, useHarrisDetector, k);
+        detector(gpuSrc, gpuDst, gpuMask);
+
+        gpuDst.download(cvDst);
+    }
+    else
+    {
+        cv::goodFeaturesToTrack(cvImage, cvDst, maxCorners, qualityLevel, minDistance,
+                                cvMask, blockSize, useHarrisDetector, k);
+    }
+
+    corners = pyopencv_from(cvDst);
+    return corners;
 }

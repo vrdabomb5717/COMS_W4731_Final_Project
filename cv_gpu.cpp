@@ -3,7 +3,8 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(gpu_overloads, cvtColor, 2, 4)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(cvt_overloads, cvtColor, 2, 4)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(features_overloads, goodFeaturesToTrack, 4, 9)
 
 BOOST_PYTHON_MODULE(cv_gpu)
 {
@@ -20,7 +21,10 @@ BOOST_PYTHON_MODULE(cv_gpu)
 
 	class_<GPU>("GPU")
 	.def(init<>())
-	.def("cvtColor", &GPU::cvtColor, gpu_overloads(args("src", "code", "dst", "dstCn"),
+	.def("cvtColor", &GPU::cvtColor, cvt_overloads(args("src", "code", "dst", "dstCn"),
 	     "cvtColor(src, code[, dst[, dstCn]]) -> dst"))
+	.def("goodFeaturesToTrack", &GPU::goodFeaturesToTrack, features_overloads(args("image", "maxCorners", "qualityLevel", "minDistance",
+	     "corners", "mask", "blockSize", "useHarrisDetector", "k"),
+	     "goodFeaturesToTrack(image, maxCorners, qualityLevel, minDistance[, corners[, mask[, blockSize[, useHarrisDetector[, k]]]]]) -> corners"))
 	;
 }
