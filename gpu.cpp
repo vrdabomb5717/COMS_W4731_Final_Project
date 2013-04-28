@@ -349,23 +349,21 @@ static PyObject* pyopencv_from(const Mat& m)
 
 // Note the import_array() from NumPy must be called else you will experience segmentation faults.
 GPU::GPU() { import_array(); }
-GPU::~GPU() {}
+GPU::~GPU() { cv::gpu::resetDevice(); }
 
 // The conversions functions above are taken from OpenCV. The following function is
 // what we define to access the C++ code we are interested in.
-PyObject* GPU::cvtColor(PyObject* image, PyObject* code)
+PyObject* GPU::cvtColor(PyObject* image, int code, PyObject* dst, int dstCn)
 {
     cv::Mat cvImage;
     ArgInfo arginfo("<unknown>", false);
     pyopencv_to(image, cvImage, arginfo); // From OpenCV's source
 
-    int color_code;
-    pyopencv_to(code, color_code);
-
     // returns 0 if OpenCV was compiled without GPU support
     int stat = cv::gpu::getCudaEnabledDeviceCount();
 
     cv::Mat processedImage;
+    pyopencv_to(dst, processedImage, arginfo);
 
     if(stat != 0)
     {
@@ -374,13 +372,27 @@ PyObject* GPU::cvtColor(PyObject* image, PyObject* code)
         cv::gpu::GpuMat src;
         src.upload(cvImage);
         cv::gpu::GpuMat dst;
-        cv::gpu::cvtColor(src, dst, color_code);
+        cv::gpu::cvtColor(src, dst, code, dstCn);
         dst.download(processedImage);
     }
     else
     {
-        cv::cvtColor(cvImage, processedImage, color_code);
+        cv::cvtColor(cvImage, processedImage, code, dstCn);
     }
 
     return pyopencv_from(processedImage); // From OpenCV's source
+}
+
+PyObject* goodFeaturesToTrack(PyObject* image, int maxCorners, double qualityLevel, double minDistance,
+                              PyObject* mask=Py_None, int blockSize=3, bool useHarrisDetector=false,
+                              double k=0.04)
+{
+    cv::Mat cvImage;
+    ArgInfo arginfo("<unknown>", false);
+    pyopencv_to(image, cvImage, arginfo);
+
+    cv::Mat cvMask;
+    pyopencv_to(mask, cvMask, arginfo);
+
+    // cv::gpu::GoodFeaturesToTrackDetector_GPU detector(points, 0.01, minDist);
 }
