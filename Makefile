@@ -11,7 +11,7 @@ BOOST_INC = /usr/local/include/boost
 OPENCV_LIB = `pkg-config --libs opencv`
 OPENCV_CFLAGS = `pkg-config --cflags opencv`
 
-# MY_CPP_LIB = lib_my_cpp_library.so
+CFLAGS= -O3 -march=native -Wall -Wextra -Wfloat-equal -Wundef -Wstrict-prototypes -Wpointer-arith -Wwrite-strings -Winit-self
 
 TARGET = cv_gpu
 SRC = cv_gpu.cpp gpu.cpp
