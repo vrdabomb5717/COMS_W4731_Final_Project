@@ -3,13 +3,13 @@ from multiprocessing import Pool
 
 import numpy as np
 import cv2
-import pdb
 
 try:
     import cv_gpu
     use_gpu = True
 except ImportError:
     use_gpu = False
+
 
 # From Programming Computer Vision in Python
 
@@ -28,7 +28,7 @@ def hulls_from_features(tr, hulls):
     x, y = point
 
     distances_gen = (cv2.pointPolygonTest(h, (x, y), True) for h in hulls)
-    distances = np.fromiter(distances_gen, np.float)
+    distances = np.fromiter(distances_gen, np.float, count=len(hulls))
 
     max_hull_index = np.argmax(distances)
     return max_hull_index

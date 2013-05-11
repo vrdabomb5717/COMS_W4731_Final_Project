@@ -428,3 +428,5 @@ PyObject* GPU::goodFeaturesToTrack(PyObject* image, int maxCorners, double quali
     corners = pyopencv_from(cvDst);
     return corners;
 }
+
+// PyObject* calcOpticalFlowPyrLK(PyObject* prevImg, PyObject* nextImg, PyObject* prevPts, PyObject* nextPts, )
