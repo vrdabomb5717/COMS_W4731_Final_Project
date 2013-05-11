@@ -20,9 +20,10 @@ Dependency versions that have been tested are listed here. Older versions of Pyt
 * numpy 1.7.1
 * OpenCV 2.4.5.0 or greater
 * ffmpeg support [optional]
-* Nvidia GPU with CUDA support [optional]
+* Nvidia GPU with CUDA 5 support [optional]
 * gcc [optional]
-* Boost.Python [optional]
+* Intel Threading Building Blocks
+* Boost.Python 1.53.0 [optional]
 
 The optional dependencies allow for GPU support, but you must build the provided GPU module first. You must also enable GPU support in your OpenCV build.
 
