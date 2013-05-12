@@ -661,7 +661,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename Figure1.png
+	filename dense-optical-flow.png
 	scale 35
 
 \end_inset
@@ -759,7 +759,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename Figure2.png
+	filename background-subtraction.png
 	scale 35
 
 \end_inset
@@ -809,7 +809,13 @@ Sparse Optical Flow
 \end_layout
 
 \begin_layout Standard
-Next we chose Background Subtraction
+Next we chose Sparse Optical Flow
+\end_layout
+
+\begin_layout Standard
+After reviewing our results from background subtraction we looked in computing
+ methods that implement sparse optical flow.
+ 
 \end_layout
 
 \begin_layout Standard
