@@ -64,7 +64,7 @@
 \pdfauthor{Varun Ravishankar, Daniel Mercado}
 
 % Keywords that describe your work.
-\keywords{tracking, real-time, video, lucas-kanade, convex hulls}
+\keywords{tracking, real-time, video, Lucas-Kanade, convex hulls}
 \end_preamble
 \options annual
 \use_default_options false
@@ -171,7 +171,7 @@ Note:
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -238,7 +238,7 @@ Design an application to perform object tracking in videos in real time.
 
 \begin_layout Standard
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 See 
@@ -439,7 +439,7 @@ The use of video tracking techniques are especially important when applied
 \end_layout
 
 \begin_layout Section
-Exposition
+Background
 \end_layout
 
 \begin_layout Standard
@@ -742,7 +742,7 @@ Sparse Optical Flow
 \end_layout
 
 \begin_layout Standard
-Next we chose Background Subtraction
+Next we chose Sparse Optical Flow.
 \end_layout
 
 \begin_layout Standard
@@ -838,11 +838,63 @@ Why wasn't it good enough?
 \end_layout
 
 \begin_layout Section
-CUDA Implementation
+Improving Performance with CUDA and Finding Other Bottlenecks
 \end_layout
 
 \begin_layout Standard
-Don't know what to put here.
+After creating centered convex hulls, we realized that our implementation's
+ performance was too slow for real-time usage.
+ We decided to focus on improving real-time performance by moving much of
+ the work being done in Python to native code.
+ When even this did not prove to be enough, we decided to move as much code
+ as possible to the GPU.
+ OpenCV contains a set of classes that utilize the GPU, taking advantage
+ of the high levels of multi-parallelism available to GPUs.
+ OpenCV contains two different implementations of common computer vision
+ algorithms.
+ One works on OpenCL, meant to work in heterogenous computing environments.
+ The other works only on NVIDIA GPUs and uses the CUDA Runtime API.
+ The CUDA implementation is more fleshed-out than the OpenCL implementation
+ and so we decided to focus on this version.
+ However, there were many technical issues with this approach.
+\end_layout
+
+\begin_layout Standard
+We first learned to call native code from Python using Boost.Python.
+ This involved writing a file that told Boost what methods to make available
+ to Python and what the arguments to these methods were.
+ We next wrote the accompanying C code that called the OpenCV functions
+ implementing the functionality we wanted.
+ OpenCV uses NumPy arrays in its Python implementation, so we first needed
+ to convert the NumPy arrays into OpenCV matrix objects.
+ This involved finding the correct conversion function in the OpenCV code
+ and converting it so that it fit the method's parameters.
+ If there was no conversion method already available, we built our own function
+ to unpackage the Python types into corresponding C++ objects.
+ We then converted the OpenCV matrix objects into the special type needed
+ for OpenCV's GPU matrix types.
+ These types differed mostly in that the GPU version allocated memory on
+ the GPU and would be cleaned up when the deconstructor was called.
+ We next called the GPU code, unpackaged the resulting GPU objects into
+ OpenCV native types, and then packaged the C++ objects into corresponding
+ Python objects.
+\end_layout
+
+\begin_layout Standard
+After creating our C extension, we integrated the native module into our
+ Python code.
+ We found that performance improved by roughly 200% after doing this, as
+ measured by the frame rate.
+ Before implementing the CUDA code, our frame rate was roughly 2 FPS, and
+ after implementing the CUDA code, our frame rate rose to 4 FPS.
+ This was still not enough for real-time usage, so we decided to implement
+ multithreading to distribute some of the work still on the CPU onto multiple
+ cores.
+ We used Python's multiprocessing module to distribute the code that checked
+ if a feature was in a hull across multiple cores and tested our new implementat
+ion on 8 cores.
+ We found that the frame rate increased to between 4.5-5 FPS, an improvemenf
+ between 50-100%.
 \end_layout
 
 \begin_layout Section
@@ -866,7 +918,7 @@ Acknowledgements
 \end_layout
 
 \begin_layout Standard
-blah blah
+Thanks to Austin Reiter for his guidance in this project.
 \end_layout
 
 \begin_layout Standard
