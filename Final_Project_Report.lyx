@@ -2,11 +2,72 @@
 \lyxformat 413
 \begin_document
 \begin_header
-\textclass article
+\textclass acmsiggraph
 \begin_preamble
-\bibpunct[, ]{[}{]}{;}{a}{}{,}
+% for the following cases use the listed document class option:
+% [annual] - Technical paper accepted for presentation at the ACM SIGGRAPH 
+%   or SIGGRAPH Asia annual conference.
+% [sponsored] - Short or full-length technical paper accepted for 
+%   presentation at an event sponsored by ACM SIGGRAPH
+%   (but not the annual conference Technical Papers program).
+% [abstract] - A one-page abstract of your accepted content
+%   (Technical Sketches, Posters, Emerging Technologies, etc.). 
+%   Content greater than one page in length should use the "[sponsored]"
+%   parameter.
+% [preprint] - A preprint version of your final content.
+% [review] - A technical paper submitted for review. Includes line
+%   numbers and anonymization of author and affiliation information.
+
+% When you submit your paper for review, please use the \TOGonlineID''
+% command to include the online ID value assigned to your paper by the
+% submission management system. Replace '45678' with the value you were
+% assigned.
+\TOGonlineid{45678}
+
+% If you are preparing a preprint of your accepted paper, and your paper
+% will be published in an issue of the ACM "Transactions on Graphics''
+% journal, replace the "0'' values in the commands below with the correct
+% volume and number values for that issue - you'll get them before your
+% final paper is due.
+\TOGvolume{0}
+\TOGnumber{0}
+
+% The TOGarticleDOI' command accepts the DOI information provided to you
+% during production, and which makes up the URLs which identifies the ACM
+% article page and direct PDF link in the ACM Digital Library.
+% Replace "1111111.2222222'' with the values you are given.
+\TOGarticleDOI{1111111.2222222}
+
+% If you would like to include links to personal repositories for auxiliary
+% material related your research contribution, you may use one or more of
+% these commands to define an appropriate URL. The "\TOGlinkslist'' command
+% found just before the first section of your document will add hyperlinked
+% icons to your document, in addition to hyperlinked icons which point to
+% the ACM Digital Library article page and the ACM Digital Library-held PDF.
+\TOGprojectURL{}
+\TOGvideoURL{}
+\TOGdataURL{}
+\TOGcodeURL{}
+
+% Paper title.
+\title{Object Tracking with Video in Real Time}
+
+% Author and Affiliation (single author).
+%\author{Name \thanks{e-mail: name@unknown.uu}\\ Research Institute}
+
+% Author and Affiliation (multiple authors).
+\author{Varun Ravishankar\thanks{e-mail: vr2263@columbia.edu}\\ Columbia University %
+\and Daniel Mercado\thanks{e-mail:dm2497@columbia.edu}\\ Columbia University}
+
+% The ``pdfauthor'' command accepts the authors of the work,
+% comma-delimited, and adds this information to the PDF metadata.
+\pdfauthor{Varun Ravishankar, Daniel Mercado}
+
+% Keywords that describe your work.
+\keywords{tracking, real-time, video, lucas-kanade, convex hulls}
 \end_preamble
-\use_default_options true
+\options annual
+\use_default_options false
 \maintain_unincluded_children false
 \language english
 \language_package default
@@ -19,33 +80,24 @@
 \use_non_tex_fonts false
 \font_sc false
 \font_osf false
-\font_sf_scale 100
+\font_sf_scale 92
 \font_tt_scale 100
 
 \graphics default
-\default_output_format pdf4
+\default_output_format default
 \output_sync 0
 \bibtex_command default
 \index_command default
 \paperfontsize default
 \spacing single
-\use_hyperref true
-\pdf_bookmarks true
-\pdf_bookmarksnumbered false
-\pdf_bookmarksopen false
-\pdf_bookmarksopenlevel 1
-\pdf_breaklinks false
-\pdf_pdfborder false
-\pdf_colorlinks true
-\pdf_backref false
-\pdf_pdfusetitle true
+\use_hyperref false
 \papersize default
-\use_geometry true
-\use_amsmath 1
-\use_esint 1
+\use_geometry false
+\use_amsmath 0
+\use_esint 0
 \use_mhchem 1
 \use_mathdots 1
-\cite_engine natbib_authoryear
+\cite_engine basic
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -55,10 +107,6 @@
 \shortcut idx
 \color #008000
 \end_index
-\leftmargin 1in
-\topmargin 1in
-\rightmargin 1in
-\bottommargin 1in
 \secnumdepth 3
 \tocdepth 3
 \paragraph_separation indent
@@ -72,32 +120,251 @@
 \html_math_output 0
 \html_css_as_file 0
 \html_be_strict false
-\html_latex_start <span class='latex'>
-\html_latex_end </span>
 \end_header
 
 \begin_body
 
-\begin_layout Title
-COMS W4731 Final Project Report
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+This is a template LyX file for articles to be submitted to the Special
+ Interest Group on Computer Graphics and Interactive Techniques (SIGGRAPH).
+ How to install the SIGGRAPH LaTeX class to your LaTeX system is explained
+ in 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://wiki.lyx.org/Examples/AcmSiggraph
 \end_layout
 
-\begin_layout Author
-Varun Ravishankar, vr2263 and Dan Mercado, dm2497
+\end_inset
+
+.
 \end_layout
 
-\begin_layout Section
-Introduction
-\end_layout
+\end_inset
 
-\begin_layout Section
-Background
+
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset citation
-LatexCommand citet
-key "Lucas_1981_2548"
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ The author, affiliation, email addresses, and the document title have to
+ set up in the LaTeX preamble of this document!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Note:
+\series default
+ The document type (review etc.) is specified by using one of the document
+ class options listed in the preamble of this file.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle 
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+The command 
+\series bold
+
+\backslash
+maketitle
+\series default
+ prepares and prints the title block.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+Design an application to perform object tracking in videos in real time.
+ Given a video, detect moving objects, and track their movements.
+ Tracking objects in real-time has many real-world applications.
+ These include the tracking of suspicious or unusual objects, identification
+ of patterns in object movement, and the general automatization of video
+ analysis typically performed by human agents.
+ Object tracking can be performed by identifying unique points of interest
+ in each frame of the video.
+ Features that do not move between frames are culled, and moving features
+ are kept.
+ The features grouped into objects and tracked frame by frame.
+ These objects can then be classified as being of interest based on specific
+ properties including: velocity, travel path, and distance between other
+ objects.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+See 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.acm.org/class/1998/
+\end_layout
+
+\end_inset
+
+ for details about the ACM Computing Review categories.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout CR categories
+\begin_inset Flex CRcat
+status open
+
+\begin_layout Plain Layout
+I.4.8
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Image Processing and Computer Vision
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Scene Analysis
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Tracking
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+keywordlist
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+The command 
+\series bold
+
+\backslash
+keywordlist
+\series default
+ prints out the keywords.
+\end_layout
 
 \end_inset
 
@@ -105,7 +372,78 @@ key "Lucas_1981_2548"
 \end_layout
 
 \begin_layout Section
-Data
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+%
+\backslash
+copyrightspace
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+When you use a copyright note, the 
+\series bold
+
+\backslash
+copyrightspace
+\series default
+ command must be the first command after the start of the first section
+ of the body of your paper.
+ It ensures the copyright space is left at the bottom of the first column
+ on the first page of your paper.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The field of computer vision provides many powerful techniques that are
+ especially useful in real world applications.
+ Some of these applications include: object recognition systems, gesture
+ recognition, 3D object reconstruction, medical imaging, and optical character
+ recognition.
+ Our project focuses on locating moving objects and people from a video
+ feed, using several known video tracking techniques including dense optical
+ flow, background subtraction, and sparse optical flow.
+ Objects can then be grouped by means of k-means clustering, convex-hulls,
+ or centered-convex hulls.
+\end_layout
+
+\begin_layout Standard
+The use of video tracking techniques are especially important when applied
+ for security and marketing purposes.
+ Changes in an objects behavior could indicate immediate danger or at least
+ suspicious activity.
+ The study of object paths can also benefit retail applications, by illustrating
+ which in-store locations are most frequently trafficked.
+ In addition to these domain specific applications, object tracking can
+ aid in automating the process of video analysis that is currently performed
+ by human agents.
+ With websites like Youtube and Vimeo uploading thousands of hours of video
+ everyday, the task of reviewing each video near impossible to perform without
+ vision techniques that help with their analysis.
+\end_layout
+
+\begin_layout Section
+Exposition
+\end_layout
+
+\begin_layout Standard
+blabla
 \end_layout
 
 \begin_layout Section
@@ -269,26 +607,277 @@ http://www.boost.org/doc/libs/1_53_0/libs/python/doc/index.html
 \end_layout
 
 \begin_layout Section
-Stuff
+Dense Optical Flow
+\end_layout
+
+\begin_layout Standard
+First we chose Dense Optical Flow
+\end_layout
+
+\begin_layout Standard
+When first implementing our design, we initially looked at implementing
+ a dense optical flow algorithm to observe motion within videos.
+ Dense optical is a method that looks at two frames in a video and looks
+ at every pixel in these frames.
+ It then creates a motion vector between each frame for these pixels.
+ Using OpenCV we implemented their Farneback algorithm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://docs.opencv.org/modules/gpu/doc/video.html##gpu-farnebackopticalflow
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ for computing dense optical flow.
+ The result is an image that displays motion vectors for each frame over
+ every pixel as seen in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Dense-Optical-Flow"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figure1.png
+	scale 35
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Dense Optical Flow
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Dense-Optical-Flow"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As is shown, we see notice small motion vectors overlaid across the video
+ image.
+ Vectors with longer trails illustrate movement within in the scene.
+ Although this result may look impressive, the run-time was not as fast
+ we'd like it to be considering we were aiming for real-time computation.
+ In addition, the sensitivity of the vectors was very low, and did not detect
+ motion in the background where cars could be seen moving as well.
+ As a result of these poor properties we looked to other means to implement
+ our object tracking project.
 \end_layout
 
 \begin_layout Section
-Future Work
+Background Subtraction
+\end_layout
+
+\begin_layout Standard
+After attempting to implement dense optical flow and receiving poor results,
+ we looked towards implementing background subtraction to isolate movement
+ in our video.
+ 
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+What library was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why weren't they good enough?
 \end_layout
 
 \begin_layout Section
-Conclusion
+Sparse Optical Flow
+\end_layout
+
+\begin_layout Standard
+Next we chose Background Subtraction
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+What library was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Was it good enough? Why?
+\end_layout
+
+\begin_layout Section
+Grouping
+\end_layout
+
+\begin_layout Subsection
+K-Means Clustering
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+How does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implementation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?
+\end_layout
+
+\begin_layout Subsection
+Convex Hulls
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+How does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implementation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?
+\end_layout
+
+\begin_layout Subsection
+Centered Convex Hulls
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+How does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implementation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?
+\end_layout
+
+\begin_layout Section
+CUDA Implementation
+\end_layout
+
+\begin_layout Standard
+Don't know what to put here.
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+Summary of what was learned.
+\end_layout
+
+\begin_layout Standard
+Why is it important?
+\end_layout
+
+\begin_layout Standard
+What future work can done with this project?
+\end_layout
+
+\begin_layout Section*
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+blah blah
 \end_layout
 
 \begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "Final_Project_Report"
-options "ACM-Reference-Format-Journals"
+options "acmsiggraph"
 
 \end_inset
 
-
+ 
 \end_layout
 
 \end_body
