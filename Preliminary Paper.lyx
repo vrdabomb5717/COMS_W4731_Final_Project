@@ -1,0 +1,590 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass IEEEtran
+\begin_preamble
+% for subfigures/subtables
+\ifCLASSOPTIONcompsoc
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\else
+\usepackage[caption=false,font=footnotesize]{subfig}
+\fi
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding default
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement tbh
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Your Title"
+\pdf_author "Your Name"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered true
+\pdf_bookmarksopen true
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks false
+\pdf_backref false
+\pdf_pdfusetitle false
+\pdf_quoted_options "pdfpagelayout=OneColumn, pdfnewwindow=true, pdfstartview=XYZ, plainpages=false"
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 0
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 2
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+This is a template LyX file for articles to be submitted to journals of
+ the Institute of Electrical and Electronics Engineers (IEEE).
+ For general infos see 
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://wiki.lyx.org/Examples/IEEE
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+You find the IEEEtran document class documentation here: 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://mirror.ctan.org/macros/latex/contrib/IEEEtran/IEEEtran_HOWTO.pdf
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+Object Tracking with Video in Real Time
+\end_layout
+
+\begin_layout Author
+Varun Ravishankar, vr2263, Daniel Mercado, dm2497
+\end_layout
+
+\begin_layout Abstract
+Design an application to perform object tracking in videos in real time.
+ Given a video, detect moving objects, and track their movements.
+ Tracking objects in real-time has many real-world applications.
+ These include the tracking of suspicious or unusual objects, identification
+ of patterns in object movement, and the general automatization of video
+ analysis typically performed by human agents.
+ Object tracking can be performed by identifying unique points of interest
+ in each frame of the video.
+ Features that do not move between frames are culled, and moving features
+ are kept.
+ The features grouped into objects and tracked frame by frame.
+ These objects can then be classified as being of interest based on specific
+ properties including: velocity, travel path, and distance between other
+ objects.
+\end_layout
+
+\begin_layout Keywords
+tracking, real-time, video, lucas-kanade, convex hulls
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+The 
+\series bold
+
+\backslash
+IEEEPARstart
+\series default
+ command is needed in the first paragraph fo the document.
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+IEEEPARstart{
+\end_layout
+
+\end_inset
+
+ T
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}{
+\end_layout
+
+\end_inset
+
+he
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ field of computer vision provides many powerful techniques that are especially
+ useful in real world applications.
+ Some of these applications include: object recognition systems, gesture
+ recognition, 3D object reconstruction, medical imaging, and optical character
+ recognition.
+ Our project focuses on locating moving objects and people from a video
+ feed, using several known video tracking techniques including dense optical
+ flow, background subtraction, and sparse optical flow.
+ Objects can then be grouped by means of k-means clusterting, convex-hulls,
+ or centered-convex hulls.
+\end_layout
+
+\begin_layout Standard
+The use of video tracking techniques are especially important when applied
+ for security and marketing purposes.
+ Changes in an objects behavior could indicate immediate danger or at least
+ suspicious activity.
+ The study of object paths can also benefit retail applications, by illustrating
+ which in-store locations are most frequently trafficked.
+ In addition to these domain specific applications, object tracking can
+ aid in automating the process of video analysis that is currently performed
+ by human agents.
+ With websites like Youtube and Vimeo uploading thousands of hours of video
+ everyday, the task of reviewing each video near impossible to perform without
+ vision techniques that help with their analysis.
+\end_layout
+
+\begin_layout Section
+Technology and Development Environment
+\end_layout
+
+\begin_layout Standard
+Our technology stack consisted of scripts meant to be run on POSIX machines.
+ We tested and ran our scripts on Ubuntu 12.04 and OS X 10.8.3, using Python
+ 2.7
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.python.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+ We heavily used OpenCV
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://opencv.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, which used NumPy
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.numpy.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ underneath to vectorize and accelerate matrix computations.
+ We also used ffmpeg
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.ffmpeg.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to allow the script to watch different video formats.
+\end_layout
+
+\begin_layout Standard
+We found many of computations to be too slow for real-time usage, so we
+ accelerated the computations using different libraries.
+ We used Intel's Threading Building Blocks
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://threadingbuildingblocks.org/
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to allow OpenCV to be parallelized, but found that this was not enough.
+ We used NVIDIA's CUDA
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.nvidia.com/object/cuda_home_new.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ framework and Boost.Python
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://www.boost.org/doc/libs/1_53_0/libs/python/doc/index.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ to create a C-extension that allowed our Python code to call OpenCV's GPU
+ implementation of the feature-detection and optical flow algorithms natively.
+\end_layout
+
+\begin_layout Section
+Dense Optical Flow
+\end_layout
+
+\begin_layout Standard
+text text text text text text text text text text text text text text text
+\end_layout
+
+\begin_layout Section
+Background Subtraction
+\end_layout
+
+\begin_layout Section
+Sparse Optical Flow
+\end_layout
+
+\begin_layout Section
+Grouping
+\end_layout
+
+\begin_layout Subsection
+K-Means Clustering
+\end_layout
+
+\begin_layout Subsection
+Convex Hulls
+\end_layout
+
+\begin_layout Subsection
+Centered Convex Hulls
+\end_layout
+
+\begin_layout Section
+CUDA Implementation
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+bla bla
+\end_layout
+
+\begin_layout Appendices
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Don't add text here!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Acknowlegment
+\end_layout
+
+\begin_layout Standard
+bla bla
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Remember though that your final submission is supposed to have all the bibliogra
+phy entries embedded in the LaTeX-file.
+ This means you eventually have to copy the .bbl file into the latex file
+ and remove the bibtex lines.
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "IEEEabrv,IEEEexample"
+options "IEEEtran"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Biography
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Your Name
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+ All about you and the what your interests are.
+\begin_inset Argument
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../../examples/CV-image.png
+	width 1in
+	height 1.25in
+	keepAspectRatio
+	clip
+
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout --Separator--
+
+\end_layout
+
+\begin_layout Biography without photo
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+{
+\end_layout
+
+\end_inset
+
+Coauthor
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+} 
+\end_layout
+
+\end_inset
+
+Same again for the co-author, but without photo
+\end_layout
+
+\end_body
+\end_document
