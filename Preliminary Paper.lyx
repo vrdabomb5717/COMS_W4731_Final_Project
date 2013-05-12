@@ -407,15 +407,120 @@ Dense Optical Flow
 \end_layout
 
 \begin_layout Standard
-text text text text text text text text text text text text text text text
+First we chose Dense Optical Flow
+\end_layout
+
+\begin_layout Standard
+When first implementing our design, we initially looked at implementing
+ a dense optical flow algorithm to observe motion within videos.
+ Dense opitical is a method that looks at two frames in a video and looks
+ at every pixel in these frames.
+ It then creates a motion vector between each frame for these pixels.
+ Using OpenCV we implemented their Farneback algorithm for computing dense
+ optical flow.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://docs.opencv.org/modules/gpu/doc/video.html#gpu-farnebackopticalflow
+\end_layout
+
+\end_inset
+
+ The result is an image that displays motion vectors for each frame over
+ every pixel as seen in Figure 1.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figure1.png
+	scale 35
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+Figure 1: Dense Optical Flow
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As is shown, we see notice small motion vectors overlayed across the video
+ image.
+ Vectors with longer trails illustrate movement within in the scene.
+ Although this result may look impressive, the run-time was not as fast
+ we'd like it to be considering we were aiming for real-time computation.
+ In addition, the sensitivity of the vectors was very low, and did not detect
+ motion in the background where cars could be seen moving as well.
+ As a result of these poor properties we looked to other means to implement
+ our object tracking project.
 \end_layout
 
 \begin_layout Section
 Background Subtraction
 \end_layout
 
+\begin_layout Standard
+After attempting to implement dense optical flow and receiving poor results,
+ we looked towards implementing background subtraction to isolate movement
+ in our video.
+ 
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+What library was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why weren't they good enough?
+\end_layout
+
 \begin_layout Section
 Sparse Optical Flow
+\end_layout
+
+\begin_layout Standard
+Next we chose Backround Subtraction
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+What library was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Was it good enough? Why?
 \end_layout
 
 \begin_layout Section
@@ -426,16 +531,80 @@ Grouping
 K-Means Clustering
 \end_layout
 
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+How does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implemenation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?
+\end_layout
+
 \begin_layout Subsection
 Convex Hulls
+\end_layout
+
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+How does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implemenation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?
 \end_layout
 
 \begin_layout Subsection
 Centered Convex Hulls
 \end_layout
 
+\begin_layout Standard
+What is it?
+\end_layout
+
+\begin_layout Standard
+How does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implemenation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?
+\end_layout
+
 \begin_layout Section
 CUDA Implementation
+\end_layout
+
+\begin_layout Standard
+Don't know what to put here.
 \end_layout
 
 \begin_layout Section
@@ -443,20 +612,15 @@ Conclusions
 \end_layout
 
 \begin_layout Standard
-bla bla
+Summary of what was learned.
 \end_layout
 
-\begin_layout Appendices
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Don't add text here!
+\begin_layout Standard
+Why is it important?
 \end_layout
 
-\end_inset
-
-
+\begin_layout Standard
+What future work can done with this project?
 \end_layout
 
 \begin_layout Section*
@@ -467,123 +631,12 @@ Acknowlegment
 bla bla
 \end_layout
 
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Remember though that your final submission is supposed to have all the bibliogra
-phy entries embedded in the LaTeX-file.
- This means you eventually have to copy the .bbl file into the latex file
- and remove the bibtex lines.
-\end_layout
-
-\end_inset
-
-
-\begin_inset CommandInset bibtex
-LatexCommand bibtex
-bibfiles "IEEEabrv,IEEEexample"
-options "IEEEtran"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Biography
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\end_inset
-
-Your Name
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
- All about you and the what your interests are.
-\begin_inset Argument
-status open
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename ../../examples/CV-image.png
-	width 1in
-	height 1.25in
-	keepAspectRatio
-	clip
-
-\end_inset
-
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout --Separator--
-
+\begin_layout Biography without photo
+All about you and the what your interests are.
 \end_layout
 
 \begin_layout Biography without photo
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{
-\end_layout
-
-\end_inset
-
-Coauthor
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-} 
-\end_layout
-
-\end_inset
-
-Same again for the co-author, but without photo
+All about the co-author and their interests.
 \end_layout
 
 \end_body
