@@ -611,10 +611,6 @@ Dense Optical Flow
 \end_layout
 
 \begin_layout Standard
-First we chose Dense Optical Flow
-\end_layout
-
-\begin_layout Standard
 When first implementing our design, we initially looked at implementing
  a dense optical flow algorithm to observe motion within videos.
  Dense optical is a method that looks at two frames in a video and looks
@@ -622,7 +618,7 @@ When first implementing our design, we initially looked at implementing
  It then creates a motion vector between each frame for these pixels.
  Using OpenCV we implemented their Farneback algorithm
 \begin_inset Foot
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -718,23 +714,94 @@ Background Subtraction
 After attempting to implement dense optical flow and receiving poor results,
  we looked towards implementing background subtraction to isolate movement
  in our video.
- 
+ Background subtraction detects the difference between two frames and calculates
+ a background esitmate from the motion detected.
+ The esitmate is then subtracted from the frame and foreground pixels are
+ left that are greater than some threshold
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+http://cs.nyu.edu/~fergus/teaching/vision_2012/13_opticalflow.pdf
+\end_layout
+
+\end_inset
+
+.
+ OpenCV provided us with a background subtraction algorithm
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+http://opencv.willowgarage.com/documentation/cpp/motion_analysis_and_object_tracki
+ng.html#cv-updatemotionhistory
+\end_layout
+
+\end_inset
+
+ to implement.
+ The result of said algorithm can be in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Background-Subtraction"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-What is it?
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figure2.png
+	scale 35
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Background Subtraction
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Background-Subtraction"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-What library was used?
-\end_layout
-
-\begin_layout Standard
-What were the results? Good? Bad?
-\end_layout
-
-\begin_layout Standard
-Why weren't they good enough?
+Detection for large vehicles worked very well when using background subtraction.
+ In addition, the speed of the method was near run-time and great for what
+ we were looking for in the application.
+ However, background subtraction suffered from one of the same problems
+ that dense optical flow suffered from.
+ Mainly it suffered from its sensitivity and inability to track smaller
+ objects moving in the background of the video.
+ One can modify the threshold from which image binarization occurs to help
+ with detect smaller objects in the video.
+ However, we one does this they also tend to pick up background noise found
+ in the video stream.
+ This noise makes it difficult to differentiate between real-world objects
+ in motion and perceived motion.
 \end_layout
 
 \begin_layout Section
