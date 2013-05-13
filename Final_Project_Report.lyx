@@ -842,9 +842,15 @@ ack
 \end_inset
 
  are chosen based on their uniqueness in terms of texture and intensity.
- The Lucas-Kanade method takes these features and estimates the motion in
- the frame based on the change of intensity of pixels in the immediate area
- of the features 
+ The Lucas-Kanade method 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Lucas_1981_2548"
+
+\end_inset
+
+ takes these features and estimates the motion in the frame based on the
+ change of intensity of pixels in the immediate area of the features 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Rojas:fk"
@@ -969,9 +975,9 @@ Grouping
 \begin_layout Standard
 Finding features to track does not alway mean finding objects.
  Pixels not in the foreground may be selected as good potential features
- based on their uniqueness, not on movement or presenence in the foreground.
+ based on their uniqueness, not on movement or presence in the foreground.
  In order to resolve this issue it was necessary to group these features
- on some heurisitic to see objects moving in the video.
+ on some heuristic to see objects moving in the video.
  This particular portion of the application difficult to resolve during
  development.
  We chose to implement three different strategies when grouping features
@@ -1117,7 +1123,119 @@ After creating our C extension, we integrated the native module into our
 \begin_layout Standard
 We next profiled our code further to detect bottlenecks.
  We had moved as much Python code to native or GPU code as possible, and
- found that the profiler confirmed this.
+ found that the profiler confirmed this, as seen in Appendix 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Python-Profiler-Output"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The 'acquire' method arises because of Python's multithreading.
+ This is not really lock-contention, but it does indicate that Python is
+ spending most of its time in the multiprocessing module, managing the different
+ processes.
+ Most time is being spent in the work being done in the thread pool, which
+ consists of finding the closest hull to the subset of points handed to
+ each process.
+ Because this work was being done across multiple processes and the method
+ being called was written in C, we determined that we could not improve
+ performance anymore; there was an algorithmic bottleneck here that prevented
+ further improvement.
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+In the end, we were able to improve our tracking system and make it performant
+ enough to use for a human to use it in real-time.
+ After experimenting with different optical flow algorithms and grouping
+ mechanisms, we narrowed down on sparse optical flow with Lucas-Kanade and
+ on creating clusters by finding convex hulls.
+\end_layout
+
+\begin_layout Standard
+Future work can be done with this system to improve performance by doing
+ background subtraction before convex hulls are found.
+ This would reduce the number of hulls and decrease the number of hulls
+ that must be checked per point.
+ Furthermore, more work can be done in distributing the convex hull checks
+ across multiple cores.
+ Python's implementation of multiprocessing is easy to use, but can lead
+ to poor performance and lock contention.
+ This would require moving much of the multiprocessing implementation into
+ C++ and using locks and threads instead of communicating processes.
+\end_layout
+
+\begin_layout Standard
+To make the system useful to civilian and military applications, it is necessary
+ to determine criteria for what makes an object suspicious.
+ We began work on determining vectors and movement patterns for objects
+ but were unable to finish this.
+ Once movement patterns are detected, work can be done in determining if
+ a given pattern is out of the ordinary e.g.
+ one object moves in the opposite direction of the others.
+ For law enforcement applications, this would enable the system to detect
+ suspicious objects, such as criminals or enemy combatants and alert the
+ authorities of such behavior.
+ For commercial applications, this could help function as a more sophisticated
+ security system.
+ Instead of simply detecting motion and turning on a light or an alarm,
+ the system could determine if such motion is out of the ordinary and has
+ not occurred before; if that is the case, then a security company can be
+ contacted or the building owner can be contacted.
+\end_layout
+
+\begin_layout Section*
+Acknowledgements
+\end_layout
+
+\begin_layout Standard
+Thanks to Austin Reiter for his guidance in this project.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "Final_Project_Report"
+options "acmsiggraph"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+onecolumn
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+\start_of_appendix
+Python Profiler Output for CUDA and Multiprocessing Implementation
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Python-Profiler-Output"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1174,55 +1292,6 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
 \begin_layout Plain Layout
 
 \end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-The 'acquire' method arises because of Python's multithreading.
- This is not really lock-contention, but it does indicate that Python is
- spending most of its time in the multiprocessing module, managing the different
- processes.
- Most time is being spent in the work being done in the thread pool, which
- consists of finding the closest hull to the subset of points handed to
- each process.
- Because this work was being done across multiple processes and the method
- being called was written in C, we determined that we could not improve
- performance anymore; there was an algorithmic bottleneck here that prevented
- further improvement.
-\end_layout
-
-\begin_layout Section
-Conclusions
-\end_layout
-
-\begin_layout Standard
-Summary of what was learned.
-\end_layout
-
-\begin_layout Standard
-Why is it important?
-\end_layout
-
-\begin_layout Standard
-What future work can done with this project?
-\end_layout
-
-\begin_layout Section*
-Acknowledgements
-\end_layout
-
-\begin_layout Standard
-Thanks to Austin Reiter for his guidance in this project.
-\end_layout
-
-\begin_layout Standard
-\begin_inset CommandInset bibtex
-LatexCommand bibtex
-bibfiles "Final_Project_Report"
-options "acmsiggraph"
 
 \end_inset
 
