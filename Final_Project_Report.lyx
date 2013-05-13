@@ -1159,13 +1159,13 @@ reference "fig:Centered-Convex-Hull"
 \end_inset
 
 .
- The hulls are drawn more tightly around their features but the pedestiran
+ The hulls are drawn more tightly around their features but the pedestrian
  is no longer tracked.
- Performance for this method was abyssmal averaging a frame a minute.
+ Performance for this method was abysmal averaging a frame a minute.
  We could not possibly use this algorithm, but it did show that we could
  draw the hulls more accurately.
  In the end, we chose to group our features using the traditional convex
- hull algroithm.
+ hull algorithm.
 \end_layout
 
 \begin_layout Section
