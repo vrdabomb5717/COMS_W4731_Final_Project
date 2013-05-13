@@ -1141,8 +1141,8 @@ name "fig:Centered-Convex-Hull"
 \begin_layout Standard
 While using convex hulls to group our features had allowed us to track objects
  with an adequate level of performance, the hulls themselves were quite
- large, and did not accurately surround their objects.
- To address this issue, we tried weight the points within the hull based
+ large and did not accurately surround their objects.
+ To address this issue, we tried weighting the points within the hull based
  on the first moment of the hull or their center of position.
  Features could then be grouped into hulls that had the nearest center of
  position, instead of the the nearest edge.
@@ -1156,7 +1156,7 @@ reference "fig:Centered-Convex-Hull"
 .
  The hulls are drawn more tightly around their features but the pedestrian
  is no longer tracked.
- Performance for this method was abysmal averaging a frame a minute.
+ Performance for this method was abysmal, averaging a frame a minute.
  We could not possibly use this algorithm, but it did show that we could
  draw the hulls more accurately.
  In the end, we chose to group our features using the traditional convex
