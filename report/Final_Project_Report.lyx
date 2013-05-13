@@ -965,8 +965,8 @@ Finding features to track does not always mean finding objects.
  Pixels not in the foreground may be selected as good potential features
  based on their uniqueness, not on movement or presence in the foreground.
  In order to resolve this issue it was necessary to group these features
- on some heuristic to see objects moving in the video.
- This particular portion of the application difficult to resolve during
+ based on some heuristic to see objects moving in the video.
+ This particular portion of the application was difficult to resolve during
  development.
  We chose to implement three different strategies when grouping features:
  k-means, convex hulls, and centered convex hulls.
