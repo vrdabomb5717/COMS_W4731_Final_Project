@@ -973,15 +973,16 @@ Grouping
 \end_layout
 
 \begin_layout Standard
-Finding features to track does not alway mean finding objects.
+Finding features to track does not always mean finding objects.
  Pixels not in the foreground may be selected as good potential features
  based on their uniqueness, not on movement or presence in the foreground.
  In order to resolve this issue it was necessary to group these features
  on some heuristic to see objects moving in the video.
  This particular portion of the application difficult to resolve during
  development.
- We chose to implement three different strategies when grouping features
- and 
+ We chose to implement three different strategies when grouping features:
+ k-means, convex hulls, and centered convex hulls.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -989,23 +990,24 @@ K-Means Clustering
 \end_layout
 
 \begin_layout Standard
-What is it?
-\end_layout
+The most straight forward method for grouping these features was to use
+ k-means clustering.
+ We would look at all the features, and partition them based on the proximity
+ to the nearest mean
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wiki:kmeans"
 
-\begin_layout Standard
-How does the algorithm work?
-\end_layout
+\end_inset
 
-\begin_layout Standard
-What library/implementation was used?
-\end_layout
-
-\begin_layout Standard
-What were the results? Good? Bad?
-\end_layout
-
-\begin_layout Standard
-Why wasn't it good enough?
+.
+ However, the simplest method was not the best.
+ K-means worked well when only partitioning them into 5 groups however at
+ time there were more than 10 objects moving in the video.
+ When partitioning the features into 10 groups there was a noticeable lag,
+ with more than 10 there was significantly noticeable lag to the point the
+ video would at less than 1 frame per second.
+ This would not help us achieve our of performing object tracking in run-time.
 \end_layout
 
 \begin_layout Subsection
@@ -1013,7 +1015,9 @@ Convex Hulls
 \end_layout
 
 \begin_layout Standard
-What is it?
+Instead of applying k-means to the features, we chose to create many convex
+ hulls around the features being tracked.
+ The algorithm 
 \end_layout
 
 \begin_layout Standard
@@ -1131,10 +1135,7 @@ reference "sec:Python-Profiler-Output"
 \end_inset
 
 .
-\end_layout
-
-\begin_layout Standard
-The 'acquire' method arises because of Python's multithreading.
+ The 'acquire' method arises because of Python's multithreading.
  This is not really lock-contention, but it does indicate that Python is
  spending most of its time in the multiprocessing module, managing the different
  processes.
