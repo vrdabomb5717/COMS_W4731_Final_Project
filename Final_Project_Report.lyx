@@ -1144,23 +1144,28 @@ name "fig:Centered-Convex-Hull"
 \end_layout
 
 \begin_layout Standard
-While the performance of the 
-\end_layout
+While using convex hulls to group our features had allowed us to track objects
+ with an adequate level of performance, the hulls themselves were quite
+ large, and did not accurately surround their objects.
+ To address this issue, we tried weight the points within the hull based
+ on the first moment of the hull or their center of position.
+ Features could then be grouped into hulls that had the nearest center of
+ position, instead of the the nearest edge.
+ The results of grouping by the first moment can be seen in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Centered-Convex-Hull"
 
-\begin_layout Standard
-How does the algorithm work?
-\end_layout
+\end_inset
 
-\begin_layout Standard
-What library/implementation was used?
-\end_layout
-
-\begin_layout Standard
-What were the results? Good? Bad?
-\end_layout
-
-\begin_layout Standard
-Why wasn't it good enough?
+.
+ The hulls are drawn more tightly around their features but the pedestiran
+ is no longer tracked.
+ Performance for this method was abyssmal averaging a frame a minute.
+ We could not possibly use this algorithm, but it did show that we could
+ draw the hulls more accurately.
+ In the end, we chose to group our features using the traditional convex
+ hull algroithm.
 \end_layout
 
 \begin_layout Section
