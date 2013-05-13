@@ -618,7 +618,7 @@ When first implementing our design, we initially looked at implementing
  It then creates a motion vector between each frame for these pixels.
  Using OpenCV we implemented their Farneback algorithm
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -652,7 +652,7 @@ reference "fig:Dense-Optical-Flow"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
@@ -717,23 +717,10 @@ After attempting to implement dense optical flow and receiving poor results,
  Background subtraction detects the difference between two frames and calculates
  a background estimate from the motion detected.
  The estimate is then subtracted from the frame and foreground pixels are
- left that are greater than some threshold
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://cs.nyu.edu/~fergus/teaching/vision_2012/13_opticalflow.pdf
-\end_layout
-
-\end_inset
-
-
-\end_layout
+ left that are greater than some threshold 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Fergus:2012uq"
 
 \end_inset
 
@@ -774,7 +761,7 @@ reference "fig:Background-Subtraction"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -857,24 +844,10 @@ ack
  are chosen based on their uniqueness in terms of texture and intensity.
  The Lucas-Kanade method takes these features and estimates the motion in
  the frame based on the change of intensity of pixels in the immediate area
- of the features
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Flex URL
-status collapsed
-
-\begin_layout Plain Layout
-
-http://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/Lucas-Kanade2.
-pdf
-\end_layout
-
-\end_inset
-
-
-\end_layout
+ of the features 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Rojas:fk"
 
 \end_inset
 
@@ -1150,7 +1123,7 @@ options "acmsiggraph"
 
 \end_inset
 
- 
+
 \end_layout
 
 \end_body
