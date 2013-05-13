@@ -835,11 +835,21 @@ After reviewing our results from background subtraction we looked in computing
  looks at specific locations in the image to track between frames.
  The locations or features
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
-http://docs.opencv.org/modules/imgproc/doc/feature_detection.html#goodfeaturestotra
-ck
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://docs.opencv.org/modules/imgproc/doc/feature_detection.html##goodfeaturestotr
+ack
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -849,11 +859,21 @@ ck
  the frame based on the change of intensity of pixels in the immediate area
  of the features
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
 http://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/Lucas-Kanade2.
 pdf
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
