@@ -433,9 +433,9 @@ The use of video tracking techniques are especially important when applied
  In addition to these domain specific applications, object tracking can
  aid in automating the process of video analysis that is currently performed
  by human agents.
- With websites like Youtube and Vimeo uploading thousands of hours of video
- everyday, the task of reviewing each video near impossible to perform without
- vision techniques that help with their analysis.
+ With users of websites like Youtube and Vimeo uploading thousands of hours
+ of video everyday, the task of reviewing each video is near impossible
+ to perform without vision techniques to help with their analysis.
 \end_layout
 
 \begin_layout Section
@@ -1317,7 +1317,7 @@ options "acmsiggraph"
 
 \begin_layout Standard
 \begin_inset ERT
-status open
+status collapsed
 
 \begin_layout Plain Layout
 
