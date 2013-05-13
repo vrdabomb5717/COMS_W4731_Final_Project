@@ -829,12 +829,36 @@ Sparse Optical Flow
 \end_layout
 
 \begin_layout Standard
-Next we chose Sparse Optical Flow.
-\end_layout
-
-\begin_layout Standard
 After reviewing our results from background subtraction we looked in computing
  methods that implement sparse optical flow.
+ Sparse optical flow does not look at every pixel in a frame and instead
+ looks at specific locations in the image to track between frames.
+ The locations or features
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://docs.opencv.org/modules/imgproc/doc/feature_detection.html#goodfeaturestotra
+ck
+\end_layout
+
+\end_inset
+
+ are chosen based on their uniqueness in terms of texture and intensity.
+ The Lucas-Kanade method takes these features and estimates the motion in
+ the frame based on the change of intensity of pixels in the immediate area
+ of the features
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+http://www.inf.fu-berlin.de/inst/ag-ki/rojas_home/documents/tutorials/Lucas-Kanade2.
+pdf
+\end_layout
+
+\end_inset
+
+.
  
 \end_layout
 
