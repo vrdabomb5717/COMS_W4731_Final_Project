@@ -439,14 +439,6 @@ The use of video tracking techniques are especially important when applied
 \end_layout
 
 \begin_layout Section
-Background
-\end_layout
-
-\begin_layout Standard
-blabla
-\end_layout
-
-\begin_layout Section
 Technology and Development Environment
 \end_layout
 
@@ -948,7 +940,7 @@ status collapsed
 \begin_inset Caption
 
 \begin_layout Plain Layout
-Background Subtraction
+Sparse Optical Flow
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:Sparse-Optical-Flow"
@@ -993,7 +985,7 @@ K-Means Clustering
 The most straight forward method for grouping these features was to use
  k-means clustering.
  We would look at all the features, and partition them based on the proximity
- to the nearest mean
+ to the nearest mean 
 \begin_inset CommandInset citation
 LatexCommand cite
 key "wiki:kmeans"
@@ -1017,23 +1009,96 @@ Convex Hulls
 \begin_layout Standard
 Instead of applying k-means to the features, we chose to create many convex
  hulls around the features being tracked.
- The algorithm 
+ Given a set of points, a convex hull algorithm defines the convex hull
+ containing a set of points 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wiki:convex-hull"
+
+\end_inset
+
+.
+ The lower-bound on runtime is as fast as sorting, so we can expect some
+ drop in performance with grouping these features using convex hulls.
+ We were able to find within the OpenCV, a convex hull algorithm already
+ implemented
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+http://docs.opencv.org/modules/imgproc/doc/structural_analysis_and_shape_descripto
+rs.html?highlight=convexhull##convexhull
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+, which we used to draw the hulls on our video.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Convex-Hull"
+
+\end_inset
+
+ shows the hulls drawn around several of the moving objects.
+ These include many cars and even pedestrians.
+ The results we received were very encouraging.
+ The majority of the objects that were moving in the video are found and
+ the application was running at about 2-4 frames per second.
+ While this was not an ideal running time for our computations, the ability
+ to recognize objects while running close to run-time was good enough for
+ our purposes.
+ The only problem with the program was that the hulls were drawn fairly
+ loosely and some of the the hulls were being drawn on stationary objects
+ in the background.
 \end_layout
 
 \begin_layout Standard
-How does the algorithm work?
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename convex-hull.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Convex Hull
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Convex-Hull"
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-What library/implementation was used?
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
-What were the results? Good? Bad?
-\end_layout
+\end_inset
 
-\begin_layout Standard
-Why wasn't it good enough?
+
 \end_layout
 
 \begin_layout Subsection
@@ -1041,7 +1106,45 @@ Centered Convex Hulls
 \end_layout
 
 \begin_layout Standard
-What is it?
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename centered-convex-hull.png
+	scale 30
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Centered Convex Hull
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Centered-Convex-Hull"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+While the performance of the 
 \end_layout
 
 \begin_layout Standard
@@ -1134,18 +1237,7 @@ reference "sec:Python-Profiler-Output"
 
 \end_inset
 
-.
- The 'acquire' method arises because of Python's multithreading.
- This is not really lock-contention, but it does indicate that Python is
- spending most of its time in the multiprocessing module, managing the different
- processes.
- Most time is being spent in the work being done in the thread pool, which
- consists of finding the closest hull to the subset of points handed to
- each process.
- Because this work was being done across multiple processes and the method
- being called was written in C, we determined that we could not improve
- performance anymore; there was an algorithmic bottleneck here that prevented
- further improvement.
+
 \end_layout
 
 \begin_layout Section
