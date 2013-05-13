@@ -1154,9 +1154,21 @@ Conclusion
 \begin_layout Standard
 In the end, we were able to improve our tracking system and make it performant
  enough to use for a human to use it in real-time.
+ Our implementation focused on improving performance, and we looked at different
+ algorithms for optical flow to do this.
+ We ruled out dense optical flow and background subtraction after determining
+ that both approaches led to too much noise and were unable to detect motion
+ in the background of the video.
  After experimenting with different optical flow algorithms and grouping
  mechanisms, we narrowed down on sparse optical flow with Lucas-Kanade and
  on creating clusters by finding convex hulls.
+ This combination was performant and was able to detect small objects in
+ the background.
+ However, when grouping objects, we ran into performance problems.
+ We were able to increase frame rates by moving some of the work into the
+ GPU and by distributing the work across multiple cores, but ran into algorithmi
+c bounds on the number of points and hulls that must be checked to group
+ features.
 \end_layout
 
 \begin_layout Standard
