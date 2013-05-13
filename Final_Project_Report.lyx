@@ -715,14 +715,24 @@ After attempting to implement dense optical flow and receiving poor results,
  we looked towards implementing background subtraction to isolate movement
  in our video.
  Background subtraction detects the difference between two frames and calculates
- a background esitmate from the motion detected.
- The esitmate is then subtracted from the frame and foreground pixels are
+ a background estimate from the motion detected.
+ The estimate is then subtracted from the frame and foreground pixels are
  left that are greater than some threshold
 \begin_inset Foot
 status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
 http://cs.nyu.edu/~fergus/teaching/vision_2012/13_opticalflow.pdf
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -733,8 +743,18 @@ http://cs.nyu.edu/~fergus/teaching/vision_2012/13_opticalflow.pdf
 status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
 http://opencv.willowgarage.com/documentation/cpp/motion_analysis_and_object_tracki
-ng.html#cv-updatemotionhistory
+ng.html##cv-updatemotionhistory
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -958,10 +978,94 @@ After creating our C extension, we integrated the native module into our
  multithreading to distribute some of the work still on the CPU onto multiple
  cores.
  We used Python's multiprocessing module to distribute the code that checked
- if a feature was in a hull across multiple cores and tested our new implementat
-ion on 8 cores.
- We found that the frame rate increased to between 4.5-5 FPS, an improvemenf
- between 50-100%.
+ if a feature was in a hull across multiple cores.
+ Python does not have full support for threads because of its Global Interpreter
+ Lock (GIL), so it instead creates multiple processes that communicate back
+ and forth using pipes or sockets.
+ This has some overhead, but is still an easy way to distribute work over
+ multiple cores.
+ Doing this and testing our new implementation on 8 cores, we found that
+ the frame rate increased to between 4.5-5 FPS, an improvement between 50-100%.
+\end_layout
+
+\begin_layout Standard
+We next profiled our code further to detect bottlenecks.
+ We had moved as much Python code to native or GPU code as possible, and
+ found that the profiler confirmed this.
+\end_layout
+
+\begin_layout Standard
+\begin_inset listings
+lstparams "breaklines=true,tabsize=4"
+inline false
+status open
+
+\begin_layout Plain Layout
+
+ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+\end_layout
+
+\begin_layout Plain Layout
+
+1879   45.466    0.024   45.466    0.024 {method 'acquire' of 'thread.lock' objects}
+\end_layout
+
+\begin_layout Plain Layout
+
+266   13.206    0.050   13.206    0.050 {cv2.waitKey}
+\end_layout
+
+\begin_layout Plain Layout
+
+265    7.844    0.030    9.828    0.037 lktrack.py:83(track_points)
+\end_layout
+
+\begin_layout Plain Layout
+
+145334    6.894    0.000    6.894    0.000 {cv2.convexHull}
+\end_layout
+
+\begin_layout Plain Layout
+
+266    6.539    0.025    6.539    0.025 {method 'detect' of 'cv2.MSER' objects}
+\end_layout
+
+\begin_layout Plain Layout
+
+1    2.607    2.607    2.610    2.610 lktrack.py:65(detect_points)
+\end_layout
+
+\begin_layout Plain Layout
+
+530    1.636    0.003    1.636    0.003 {cv2.calcOpticalFlowPyrLK}
+\end_layout
+
+\begin_layout Plain Layout
+
+266    1.097    0.004   60.449    0.227 lktrack.py:151(draw)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The 'acquire' method arises because of Python's multithreading.
+ This is not really lock-contention, but it does indicate that Python is
+ spending most of its time in the multiprocessing module, managing the different
+ processes.
+ Most time is being spent in the work being done in the thread pool, which
+ consists of finding the closest hull to the subset of points handed to
+ each process.
+ Because this work was being done across multiple processes and the method
+ being called was written in C, we determined that we could not improve
+ performance anymore; there was an algorithmic bottleneck here that prevented
+ further improvement.
 \end_layout
 
 \begin_layout Section
