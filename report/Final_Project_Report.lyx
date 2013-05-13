@@ -554,7 +554,7 @@ http://threadingbuildingblocks.org/
 \end_inset
 
  to allow OpenCV to be parallelized, but found that this was not enough.
- We used NVIDIA's CUDA
+ We then used NVIDIA's CUDA
 \begin_inset Foot
 status collapsed
 
@@ -605,10 +605,10 @@ Dense Optical Flow
 \begin_layout Standard
 When first implementing our design, we initially looked at implementing
  a dense optical flow algorithm to observe motion within videos.
- Dense optical is a method that looks at two frames in a video and looks
- at every pixel in these frames.
+ Dense optical flow is a method that looks at two frames in a video and
+ looks at every pixel in these frames.
  It then creates a motion vector between each frame for these pixels.
- Using OpenCV we implemented their Farneback algorithm
+ Using OpenCV, we implemented their Farneback algorithm
 \begin_inset Foot
 status collapsed
 
@@ -685,13 +685,14 @@ name "fig:Dense-Optical-Flow"
 \begin_layout Standard
 As is shown, we see notice small motion vectors overlaid across the video
  image.
- Vectors with longer trails illustrate movement within in the scene.
- Although this result may look impressive, the run-time was not as fast
- we'd like it to be considering we were aiming for real-time computation.
- In addition, the sensitivity of the vectors was very low, and did not detect
- motion in the background where cars could be seen moving as well.
- As a result of these poor properties we looked to other means to implement
- our object tracking project.
+ Vectors with longer trails illustrate movement within the scene.
+ Although this result may look impressive, the run-time as measured by frame-rat
+e was not as fast as we would like it to be considering we were aiming for
+ real-time computation.
+ In addition, the sensitivity of the vectors was very low and did not detect
+ motion in the background, where cars could be seen moving as well.
+ As a result of these poor properties, we looked to other means to implement
+ object tracking.
 \end_layout
 
 \begin_layout Section
@@ -785,15 +786,15 @@ name "fig:Background-Subtraction"
 
 \begin_layout Standard
 Detection for large vehicles worked very well when using background subtraction.
- In addition, the speed of the method was near run-time and great for what
+ In addition, the speed of the method was near real-time and ideal for what
  we were looking for in the application.
  However, background subtraction suffered from one of the same problems
  that dense optical flow suffered from.
- Mainly it suffered from its sensitivity and inability to track smaller
+ Mainly, it suffered from its sensitivity and inability to track smaller
  objects moving in the background of the video.
  One can modify the threshold from which image binarization occurs to help
  with detect smaller objects in the video.
- However, we one does this they also tend to pick up background noise found
+ However, when we does this we also tended to pick up background noise found
  in the video stream.
  This noise makes it difficult to differentiate between real-world objects
  in motion and perceived motion.
@@ -804,8 +805,8 @@ Sparse Optical Flow
 \end_layout
 
 \begin_layout Standard
-After reviewing our results from background subtraction we looked in computing
- methods that implement sparse optical flow.
+After reviewing our results from background subtraction, we looked to computing
+ methods that implemented sparse optical flow.
  Sparse optical flow does not look at every pixel in a frame and instead
  looks at specific locations in the image to track between frames.
  The locations or features
@@ -906,16 +907,15 @@ reference "fig:Sparse-Optical-Flow"
  The computation runs in real-time and is quite accurate at detecting objects
  that are in motion.
  However, there are two flaws to this method.
- The first the even features that are not in motion are displayed.
+ The first is that even features that are not in motion are displayed.
  The second problem is that features are recomputed every frame.
- The lead to features being dragged of the screen, or having large moving
- objects not detected at all.
- The frames per second achieved with the Lucas-Kanade algorithm was very
- strong, and for the most part when feature were re-generated regularly
- we found that sparse optical provided good movement tracking in real-time
- for tracking objects.
- We found that regenerating features every 5 frames gave us features frequent
- enough that no objects were missed when performing tracking.
+ This leads to features being dragged off the screen, or having large moving
+ objects be undetected.
+ The frame-rate achieved with the Lucas-Kanade algorithm was very strong,
+ and for the most part when feature were re-generated regularly we found
+ that sparse optical provided good movement tracking in real-time.
+ We found that regenerating features every five frames gave us features
+ frequently enough that few objects were missed when performing tracking.
 \end_layout
 
 \begin_layout Standard
