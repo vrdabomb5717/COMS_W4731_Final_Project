@@ -767,7 +767,7 @@ status collapsed
 \align center
 \begin_inset Graphics
 	filename background-subtraction.png
-	scale 35
+	scale 30
 
 \end_inset
 
@@ -854,9 +854,9 @@ key "Rojas:fk"
 .
  We also chose to use further refine our features by finding sub-pixel locations
  of the corners.
- We used OpenCV's implemnation of Lucas-Kanade optical flow
+ We used OpenCV's implementation of Lucas-Kanade optical flow
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -877,7 +877,7 @@ calcopticalflowpyrlk
 
 , as well as their GoodFeaturesToTrack
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \begin_inset Flex URL
@@ -900,14 +900,14 @@ ack
 \end_layout
 
 \begin_layout Standard
-In figure 
+In Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:Sparse-Optical-Flow"
 
 \end_inset
 
- we can see these features and the trails they leave when computing sparse
+, we can see these features and the trails they leave when computing sparse
  optical flow.
  The computation runs in real-time and is quite accurate at detecting objects
  that are in motion.
@@ -928,20 +928,13 @@ reference "fig:Sparse-Optical-Flow"
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:Background-Subtraction"
-
-\end_inset
-
-
 \begin_inset Graphics
-	filename ../COMS_W4731_Final_Project.backup2/sparse-optical-flow.png
-	scale 35
+	filename sparse-optical-flow.png
+	scale 30
 
 \end_inset
 
