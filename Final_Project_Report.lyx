@@ -967,15 +967,16 @@ Grouping
 \end_layout
 
 \begin_layout Standard
-Finding features to track does not alway mean finding objects.
+Finding features to track does not always mean finding objects.
  Pixels not in the foreground may be selected as good potential features
  based on their uniqueness, not on movement or presenence in the foreground.
- In order to resolve this issue it was necessary to group these features
+ In order to resolve this issue it is necessary to group these features
  on some heurisitic to see objects moving in the video.
  This particular portion of the application difficult to resolve during
  development.
- We chose to implement three different strategies when grouping features
- and 
+ We chose to implement three different strategies when grouping features:
+ k-means, convex hulls, and centered convex hulls.
+ 
 \end_layout
 
 \begin_layout Subsection
@@ -983,23 +984,24 @@ K-Means Clustering
 \end_layout
 
 \begin_layout Standard
-What is it?
-\end_layout
+The most straight forward methord for grouping these features was to use
+ k-means clustering.
+ We would look at all the features, and partition them based on the proximity
+ to the nearest mean
+\begin_inset CommandInset citation
+LatexCommand cite
+key "wiki:kmeans"
 
-\begin_layout Standard
-How does the algorithm work?
-\end_layout
+\end_inset
 
-\begin_layout Standard
-What library/implementation was used?
-\end_layout
-
-\begin_layout Standard
-What were the results? Good? Bad?
-\end_layout
-
-\begin_layout Standard
-Why wasn't it good enough?
+.
+ However, the simplest method was not the best.
+ K-means worked well when only partitioning them into 5 groups however at
+ time there were more than 10 objects moving in the video.
+ When partitioning the features into 10 groups there was a noticeable lag,
+ with more than 10 there was significantly noticeable lag to the point the
+ video would at less than 1 frame per second.
+ This would not help us achieve our of performing object tracking in run-time.
 \end_layout
 
 \begin_layout Subsection
@@ -1007,7 +1009,9 @@ Convex Hulls
 \end_layout
 
 \begin_layout Standard
-What is it?
+Instead of applying k-means to the features, we chose to create many convex
+ hulls around the features being tracked.
+ The algoritm 
 \end_layout
 
 \begin_layout Standard
@@ -1188,10 +1192,22 @@ The 'acquire' method arises because of Python's multithreading.
  Most time is being spent in the work being done in the thread pool, which
  consists of finding the closest hull to the subset of points handed to
  each process.
- Because this work was being done across multiple processes and the method
- being called was written in C, we determined that we could not improve
- performance anymore; there was an algorithmic bottleneck here that prevented
- further improvement.
+ Because this work was being dow does the algorithm work?
+\end_layout
+
+\begin_layout Standard
+What library/implementation was used?
+\end_layout
+
+\begin_layout Standard
+What were the results? Good? Bad?
+\end_layout
+
+\begin_layout Standard
+Why wasn't it good enough?one across multiple processes and the method being
+ called was written in C, we determined that we could not improve performance
+ anymore; there was an algorithmic bottleneck here that prevented further
+ improvement.
 \end_layout
 
 \begin_layout Section
