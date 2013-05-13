@@ -224,8 +224,8 @@ Design an application to perform object tracking in videos in real time.
  Given a video, detect moving objects, and track their movements.
  Tracking objects in real-time has many real-world applications.
  These include the tracking of suspicious or unusual objects, identification
- of patterns in object movement, and the general automatization of video
- analysis typically performed by human agents.
+ of patterns in object movement, and the general automation of video analysis
+ typically performed by human agents.
  Object tracking can be performed by identifying unique points of interest
  in each frame of the video.
  Features that do not move between frames are culled, and moving features
@@ -444,7 +444,7 @@ Technology and Development Environment
 
 \begin_layout Standard
 Our technology stack consisted of scripts meant to be run on POSIX machines.
- We tested and ran our scripts on Ubuntu 12.04 and OS X 10.8.3, using Python
+ We tested and ran our scripts on Ubuntu 12.10 and OS X 10.8.3, using Python
  2.7
 \begin_inset Foot
 status collapsed
