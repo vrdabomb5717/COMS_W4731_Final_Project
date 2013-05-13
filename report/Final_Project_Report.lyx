@@ -647,14 +647,10 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename dense-optical-flow.png
-	scale 35
+	filename images/dense-optical-flow.png
+	scale 30
 
 \end_inset
 
@@ -758,7 +754,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename background-subtraction.png
+	filename images/background-subtraction.png
 	scale 30
 
 \end_inset
@@ -931,7 +927,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename sparse-optical-flow.png
+	filename images/sparse-optical-flow.png
 	scale 30
 
 \end_inset
@@ -1072,7 +1068,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename convex-hull.png
+	filename images/convex-hull.png
 	scale 30
 
 \end_inset
@@ -1114,7 +1110,7 @@ status collapsed
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename centered-convex-hull.png
+	filename images/centered-convex-hull.png
 	scale 30
 
 \end_inset
