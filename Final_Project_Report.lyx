@@ -606,6 +606,30 @@ http://www.boost.org/doc/libs/1_53_0/libs/python/doc/index.html
  implementation of the feature-detection and optical flow algorithms natively.
 \end_layout
 
+\begin_layout Standard
+All our code is available in a Github repository
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+https://github.com/vrdabomb5717/COMS_W4731_Final_Project
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
 \begin_layout Section
 Dense Optical Flow
 \end_layout
@@ -655,14 +679,10 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename dense-optical-flow.png
-	scale 35
+	scale 30
 
 \end_inset
 
