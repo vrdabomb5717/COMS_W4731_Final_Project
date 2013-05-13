@@ -990,11 +990,11 @@ key "wiki:kmeans"
 
 .
  However, the simplest method was not the best.
- K-means worked well when only partitioning them into 5 groups however at
- time there were more than 10 objects moving in the video.
+ K-means worked well when only partitioning them into 5 groups.
+ However, at times there were more than 10 objects moving in the video.
  When partitioning the features into 10 groups there was a noticeable lag,
- with more than 10 there was significantly noticeable lag to the point the
- video would at less than 1 frame per second.
+ and with more than 10 there was significantly noticeable lag to the point
+ that the video would at less than 1 frame per second.
  This would not help us achieve our of performing object tracking in run-time.
 \end_layout
 
@@ -1016,8 +1016,7 @@ key "wiki:convex-hull"
 .
  The lower-bound on runtime is as fast as sorting, so we can expect some
  drop in performance with grouping these features using convex hulls.
- We were able to find within the OpenCV, a convex hull algorithm already
- implemented
+ We were able to find within OpenCV a convex hull algorithm already implemented
 \begin_inset Foot
 status collapsed
 
