@@ -1143,10 +1143,10 @@ name "fig:Centered-Convex-Hull"
 While using convex hulls to group our features had allowed us to track objects
  with an adequate level of performance, the hulls themselves were quite
  large, and did not accurately surround their objects.
- To address this issue, we tried weight the points within the hull based
+ To address this issue, we tried to weight the points within the hull based
  on the first moment of the hull or their center of position.
- Features could then be grouped into hulls that had the nearest center of
- position, instead of the the nearest edge.
+ Features could then be grouped into the hulls that had the nearest center
+ of position, instead of the the nearest edge.
  The results of grouping by the first moment can be seen in Figure 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1176,7 +1176,7 @@ After creating centered convex hulls, we realized that our implementation's
  When even this did not prove to be enough, we decided to move as much code
  as possible to the GPU.
  OpenCV contains a set of classes that utilize the GPU, taking advantage
- of the high levels of multi-parallelism available to GPUs.
+ of the high levels of multi-parallelism available to them.
  OpenCV contains two different implementations of common computer vision
  algorithms.
  One works on OpenCL, meant to work in heterogenous computing environments.
@@ -1247,7 +1247,7 @@ Conclusion
 
 \begin_layout Standard
 In the end, we were able to improve our tracking system and make it performant
- enough to use for a human to use it in real-time.
+ enough for a human to use it in real-time.
  Our implementation focused on improving performance, and we looked at different
  algorithms for optical flow to do this.
  We ruled out dense optical flow and background subtraction after determining
